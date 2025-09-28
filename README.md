@@ -32,9 +32,6 @@ Installation
 
 Clone the repository:
 
-git clone https://github.com/your-username/event-booking-website.git
-
-
 Navigate to the project directory:
 
 cd event-booking-website
