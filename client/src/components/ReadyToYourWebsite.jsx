@@ -1,13 +1,15 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faInstagram, faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 function ReadyToYourWebsite() {
+    const navigate = useNavigate();
     return (
-        <>
+        <div className="mt-4">
         <h4>Your Event, Your Way</h4>
         <div
-            className="shadow-0 p-4 mt-0 text-left"
+            className="shadow-0 p-4 mt-3 text-left"
             style={{ background: "#f4f3f3", borderRadius: "10px", height: "37vh" }}
         >
             <h2 className="fw-bold mt-3">Ready to Host Your Own Events?</h2>
@@ -15,8 +17,9 @@ function ReadyToYourWebsite() {
             <button
                 className="btn fw-bold text-light px-4"
                 style={{ background: "orange", borderRadius: "20px", fontSize: "18px" }}
+                onClick={()=>navigate('/createEvent')}
             >
-                Create Your Event
+                Post Your Event
             </button>
 
             <div className="position-relative">
@@ -66,7 +69,7 @@ function ReadyToYourWebsite() {
             </div>
 
         </div>
-        </>
+        </div>
 
     );
 }

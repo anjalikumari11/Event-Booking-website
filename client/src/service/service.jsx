@@ -1,0 +1,34 @@
+import axios from "axios";
+const EVENT_REST_API = "http://localhost:5000/event";
+const USER_WORDS = "http://localhost:5000/userWords";
+const AUTH_API = "http://localhost:5000/auth";
+
+export const allEvents = () => {
+    return axios.get(EVENT_REST_API);
+}
+export const getEventById = (id)=>{
+    return axios.get(`${EVENT_REST_API}/${id}`);
+}
+
+export const createEvent = (data) =>{
+    return axios.post(`${EVENT_REST_API}/addEvent`,data);
+}
+// all images for banner
+export const getAllImageFromDB = () =>{
+    return axios.get("http://localhost:5000/images");
+}
+
+// what our user say
+export const getUsersWord = () =>{
+    return axios.get(USER_WORDS);
+}
+
+// auth
+export const register=(data)=>{
+    return axios.post(`${AUTH_API}/register`,data);
+}
+export const login =(data)=>{
+    return axios.post(`${AUTH_API}/login`,data,{
+        withCredentials: true,
+    });
+}

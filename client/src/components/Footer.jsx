@@ -3,8 +3,8 @@ import React from 'react';
 function Footer() {
   return (
     <footer
-      className="text-center shadow text-secondary py-3 mt-5"
-      style={{background:"#ebe7e7ff"}}
+      className="text-center shadow text-light py-3 "
+      style={{background:"#302f2fff"}}
     >
       &copy; {new Date().getFullYear()} anjalikumari11. All rights reserved.
     </footer>
