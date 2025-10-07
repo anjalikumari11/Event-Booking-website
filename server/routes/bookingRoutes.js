@@ -4,6 +4,6 @@ import { BookSlot, getBookingById, showAllBookings} from "../controller/bookingC
 const router = express.Router();
 router.post("/book",BookSlot);
 router.get("/",showAllBookings);
-router.get("/:id",getBookingById);
+router.get("/bookingid/:bookingId",getBookingById);
 
 export default router;

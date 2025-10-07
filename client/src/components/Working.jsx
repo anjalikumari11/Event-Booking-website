@@ -3,9 +3,62 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendar } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faSearch, faTicket, faClipboardList, faMoneyBillWave, faDownload, faMapMarkerAlt, faCog } from "@fortawesome/free-solid-svg-icons";
 
 function Working() {
+
+const steps = [
+  {
+    step: 1,
+    title: "Sign Up / Log In",
+    description: "Create a new account using your email/phone or log in if you already have an account.",
+    icon: faUser
+  },
+  {
+    step: 2,
+    title: "Browse Events",
+    description: "Explore upcoming events. Use filters to find the event you want.",
+    icon: faSearch
+  },
+  {
+    step: 3,
+    title: "Select Your Tickets",
+    description: "Choose the number and type of tickets you want and click 'Book Now'.",
+    icon: faTicket
+  },
+  {
+    step: 4,
+    title: "Provide Booking Details",
+    description: "Enter your personal details, review your selection, and confirm the total cost.",
+    icon: faClipboardList
+  },
+  {
+    step: 5,
+    title: "Make Payment",
+    description: "Select a payment method and complete the payment process.",
+    icon: faMoneyBillWave
+  },
+  {
+    step: 6,
+    title: "Receive Tickets",
+    description: "Download your e-ticket or QR code, or check your email for confirmation.",
+    icon: faDownload
+  },
+  {
+    step: 7,
+    title: "Attend the Event",
+    description: "Show your e-ticket or QR code at the venue and enjoy the event.",
+    icon: faMapMarkerAlt
+  },
+  {
+    step: 8,
+    title: "Manage Your Bookings",
+    description: "View your bookings, and download tickets again.",
+    icon: faCog
+  }
+];
+
+
   return (
     <div
       className="shadow-0 p-3 text-left"
@@ -29,20 +82,21 @@ function Working() {
           1024: { slidesPerView: 4 },
         }}
       >
-        {[1, 2, 3, 4, 5, 6].map((i) => (
+        {steps.map((i) => (
           <SwiperSlide key={i}>
             <div
               className="card shadow-sm border-0 text-center p-4 mx-auto mb-3 swiper-card"
-              style={{ maxWidth: "400px" }}
+              style={{ maxWidth: "400px" , minHeight:"300px"}}
             >
               <div
                 className="rounded-circle mb-3 mx-auto d-flex justify-content-center align-items-center"
                 style={{ height: "80px", width: "80px", background: "#f4f3f3" }}
               >
-                <FontAwesomeIcon icon={faCalendar} size={"2x"} color="orange" />
+                <FontAwesomeIcon icon={i.icon} size={"2x"} color="orange" />
               </div>
+              <p className="card-text fw-bold" style={{color:"#868282ff"}}>{i.title}</p>
               <p className="card-text">
-                "Great experience, I loved the learning process."
+                {i.description}
               </p>
             </div>
           </SwiperSlide>
