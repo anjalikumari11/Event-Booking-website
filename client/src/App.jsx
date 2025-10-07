@@ -7,11 +7,13 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import Swal from 'sweetalert2';
 import DetailEvent from './pages/DetailEvent';
 import CreateEvent from './pages/CreateEvent';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import DashboardLayout from './Dashboard/DashboardLayout';
+import UserAnalytics from './Dashboard/UserAnalytics';
+import DashboardPayments from './Dashboard/DashboardPayments';
 
 function App() {
   useEffect(() => {
@@ -26,6 +28,12 @@ function App() {
         <Route path='/createEvent' element={<CreateEvent/>} />
         <Route path='/signin' element={<SignIn/>} />
         <Route path='/signup' element={<SignUp/>} />
+
+        <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route index element={<UserAnalytics />} />        
+          {/* <Route path="analytics" element={<Analytics />} />   */}
+          <Route path="payments" element={<DashboardPayments/>} />  
+        </Route>
       </Routes>
     </BrowserRouter>
   );

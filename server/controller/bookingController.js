@@ -42,7 +42,7 @@ export const showAllBookings = async (req, res) => {
     }
 }
 
-export const getBookingById = async (req, res) => {
+export const getBookingBybookingId = async (req, res) => {
     try {
         const { bookingId } = req.params;
         const sql = "SELECT * FROM bookings WHERE booking_id =?";
@@ -63,4 +63,29 @@ export const getBookingById = async (req, res) => {
         });
     }
 }
+
+export const bookingById = async (req, res) => {
+  try {
+    const { user_id } = req.params; 
+    const userId = Number(user_id); 
+
+    const sql = "SELECT * FROM bookings WHERE user_id = ?";
+    const [rows] = await db.query(sql, [userId]);
+
+    if (rows.length > 0) {
+      res.status(200).json({
+        message: "Data fetched successfully",
+        data: rows,
+      });
+    } else {
+      res.status(404).json({ message: "No bookings found for this user" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Error fetching bookings",
+      error: error.message,
+    });
+  }
+};
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClose, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClose, faSearch, faUser, faSignOutAlt, faDashboard } from "@fortawesome/free-solid-svg-icons";
 import logo from "/logo.png";
 import { useNavigate } from "react-router-dom";
 
@@ -8,36 +8,43 @@ function Navbar() {
   const navigate = useNavigate();
   const [searchBar, setSearchBar] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const user = localStorage.getItem("user");
   const parsedUser = user ? JSON.parse(user) : null;
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleDashboard = () => {
+    navigate("/dashboard");
+    setShowDropdown(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/signin");
+  };
 
   return (
     <>
       <nav
         className={`navbar navbar-expand-lg position-fixed top-0 w-100 px-4 transition`}
         style={{
-          zIndex: "1099",
+          zIndex: 1099,
           background: scrolled ? "rgba(0, 0, 0, 0.85)" : "transparent",
           transition: "background 0.3s",
         }}
       >
         <a
           className="navbar-brand d-flex align-items-center text-light"
-          href="#home"
           onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }}
         >
           <img src={logo} height={45} className="me-2" />
           <strong>MyBrand</strong>
@@ -57,25 +64,75 @@ function Navbar() {
             <li onClick={() => setSearchBar(true)} style={{ cursor: "pointer" }}>
               <FontAwesomeIcon icon={faSearch} className="nav-link text-light" />
             </li>
-            <li className="nav-item"><a className="nav-link text-light" onClick={() => navigate("/")}>Home</a></li>
-            <li className="nav-item"><a className="nav-link text-light" href="#about">About</a></li>
-
-          </ul>
-          {parsedUser ?
             <li className="nav-item">
-              <a className="nav-link p-0" href="#profile">
-                <img src={logo} height={30} style={{ borderRadius: "50%" }} />
+              <a className="nav-link text-light" onClick={() => navigate("/")}>
+                Home
               </a>
             </li>
-            :
-            <button
-              className="btn ms-3 text-white"
-              style={{ background: "orange", borderRadius: "30px" }}
-              onClick={() => navigate("/signin")}
-            >
-              Sign In
-            </button>
-          }
+            <li className="nav-item">
+              <a className="nav-link text-light" href="#about">
+                About
+              </a>
+            </li>
+
+            {parsedUser ? (
+              <li className="nav-item position-relative">
+                <img
+                  src={parsedUser.profilePic || logo}
+                  alt="profile"
+                  height={35}
+                  width={35}
+                  style={{ borderRadius: "50%", cursor: "pointer", objectFit: "cover" }}
+                  onClick={() => setShowDropdown(!showDropdown)}
+                />
+                {showDropdown && (
+                  <ul
+                    className="position-absolute bg-dark text-light list-unstyled shadow-lg p-2 mt-2"
+                    style={{
+                      right: 0,
+                      borderRadius: "10px",
+                      minWidth: "180px",
+                      zIndex: 2000,
+                      animation: "fadeIn 0.3s ease-in-out",
+                    }}
+                  >
+                    <li
+                      className="dropdown-item text-light py-2 px-3"
+                      style={{ cursor: "pointer" }}
+                      onClick={handleDashboard}
+                    >
+                      <FontAwesomeIcon icon={faDashboard} className="me-2" />
+                      Dashboard
+                    </li>
+                    <li
+                      className="dropdown-item text-light py-2 px-3"
+                      style={{ cursor: "pointer" }}
+                    >
+                      <FontAwesomeIcon icon={faUser} className="me-2" />
+                      Profile
+                    </li>
+                    <hr style={{ margin: "4px 0", borderColor: "gray" }} />
+                    <li
+                      className="dropdown-item text-light py-2 px-3"
+                      style={{ cursor: "pointer" }}
+                      onClick={handleLogout}
+                    >
+                      <FontAwesomeIcon icon={faSignOutAlt} className="me-2" />
+                      Logout
+                    </li>
+                  </ul>
+                )}
+              </li>
+            ) : (
+              <button
+                className="btn ms-3 text-white"
+                style={{ background: "orange", borderRadius: "30px" }}
+                onClick={() => navigate("/signin")}
+              >
+                Sign In
+              </button>
+            )}
+          </ul>
         </div>
       </nav>
 
@@ -110,6 +167,15 @@ function Navbar() {
           </form>
         </div>
       )}
+
+      <style>
+        {`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        `}
+      </style>
     </>
   );
 }

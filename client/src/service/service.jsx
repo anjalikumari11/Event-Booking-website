@@ -43,3 +43,8 @@ export const bookSlot = (data) => {
 export const getTicketsById = (bookingId) => {
     return axios.get(`${BOOKING_API}/bookingid/${bookingId}`);
 }
+
+// get by userId
+export const getBookingDetails = (user_id) =>{
+    return axios.get(`${BOOKING_API}/book/${user_id}`);
+}

@@ -32,6 +32,18 @@
   box-shadow: 0 0 5px rgba(255,165,0,0.5);
 }
 
+.drawer{
+  height: 50vh;
+  width: 200px;
+  background-color: black;
+  color: white;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 9999;
+  border-radius: 20px 0 0 20px;
+}
+
 
 /* what our users say */
 .carousel-control-prev-icon,
