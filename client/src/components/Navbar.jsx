@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClose, faSearch, faUser, faSignOutAlt, faDashboard } from "@fortawesome/free-solid-svg-icons";
+import { faClose, faSearch, faUser, faSignOutAlt, faDashboard, faBars } from "@fortawesome/free-solid-svg-icons";
 import logo from "/logo.png";
 import { useNavigate } from "react-router-dom";
 
@@ -47,7 +47,7 @@ function Navbar() {
           style={{ cursor: "pointer" }}
         >
           <img src={logo} height={45} className="me-2" />
-          <strong>MyBrand</strong>
+          <strong>PartyPass</strong>
         </a>
 
         <button
@@ -56,7 +56,7 @@ function Navbar() {
           data-bs-toggle="collapse"
           data-bs-target="#navbarNav"
         >
-          <span className="navbar-toggler-icon"></span>
+          <FontAwesomeIcon icon={faBars} className="navbar-toggler-icon" color="white"></FontAwesomeIcon>
         </button>
 
         <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
@@ -70,21 +70,37 @@ function Navbar() {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-light" href="#about">
+              <a className="nav-link text-light" onClick={() => navigate("/about")}>
                 About
               </a>
             </li>
 
             {parsedUser ? (
-              <li className="nav-item position-relative">
-                <img
-                  src={parsedUser.profilePic || logo}
-                  alt="profile"
-                  height={35}
-                  width={35}
-                  style={{ borderRadius: "50%", cursor: "pointer", objectFit: "cover" }}
-                  onClick={() => setShowDropdown(!showDropdown)}
-                />
+              <div className="nav-item position-relative">
+                {parsedUser.profilePic ?
+                  <img
+                    src={parsedUser.profilePic}
+                    alt="profile"
+                    height={35}
+                    width={35}
+                    style={{ borderRadius: "50%", cursor: "pointer", objectFit: "cover" }}
+                    onClick={() => setShowDropdown(!showDropdown)}
+                  />
+                  :
+                  <div
+                    style={{
+                      borderRadius: "50%", cursor: "pointer", objectFit: "cover", height: "40px", width: "40px", backgroundColor: "#FFA500", // optional: a background color
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "white",
+                      fontWeight: "bold",
+                      fontSize: "16px",
+                    }}
+                    onClick={() => setShowDropdown(!showDropdown)}>
+                    {parsedUser.name ? parsedUser.name.charAt(0).toUpperCase() : "U"}
+                  </div>
+                }
                 {showDropdown && (
                   <ul
                     className="position-absolute bg-dark text-light list-unstyled shadow-lg p-2 mt-2"
@@ -107,6 +123,7 @@ function Navbar() {
                     <li
                       className="dropdown-item text-light py-2 px-3"
                       style={{ cursor: "pointer" }}
+                      onClick={() => navigate("/dashboard/profile")}
                     >
                       <FontAwesomeIcon icon={faUser} className="me-2" />
                       Profile
@@ -122,7 +139,7 @@ function Navbar() {
                     </li>
                   </ul>
                 )}
-              </li>
+              </div>
             ) : (
               <button
                 className="btn ms-3 text-white"

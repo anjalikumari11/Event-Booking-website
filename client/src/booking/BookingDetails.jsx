@@ -23,6 +23,7 @@ export default function BookingDetail() {
     return (
         <div className="container my-5">
             <h2>Booking Details</h2>
+            <p><strong>Event Date:</strong> {booking.eventDate}</p>
             <p><strong>Booking ID:</strong> {booking.booking_id}</p>
             <p><strong>Name:</strong> {booking.name}</p>
             <p><strong>Email:</strong> {booking.email}</p>

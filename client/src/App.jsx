@@ -14,6 +14,9 @@ import SignUp from './pages/SignUp';
 import DashboardLayout from './Dashboard/DashboardLayout';
 import UserAnalytics from './Dashboard/UserAnalytics';
 import DashboardPayments from './Dashboard/DashboardPayments';
+import Profile from './Dashboard/Profile';
+import About from './components/About';
+import ProtectedRoute from './ProtectedRoute';
 
 function App() {
   useEffect(() => {
@@ -25,15 +28,17 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/exploreEvents" element={<ExploreEvents />} />
         <Route path='/events/:id' element={<DetailEvent/>} />
-        <Route path='/createEvent' element={<CreateEvent/>} />
+        <Route path='/createEvent' element={<ProtectedRoute><CreateEvent/></ProtectedRoute>} />
         <Route path='/signin' element={<SignIn/>} />
         <Route path='/signup' element={<SignUp/>} />
+        <Route path='/about' element={<About/>} />
 
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<UserAnalytics />} />        
-          {/* <Route path="analytics" element={<Analytics />} />   */}
+          <Route path="profile" element={<Profile />} />  
           <Route path="payments" element={<DashboardPayments/>} />  
         </Route>
+        
       </Routes>
     </BrowserRouter>
   );

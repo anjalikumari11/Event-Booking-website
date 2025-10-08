@@ -43,6 +43,9 @@ export default function DetailEvent() {
     if (!event) {
         return <div className="text-center my-5">Event not found!</div>;
     }
+    const eventDate = new Date("2025-10-04T18:30:00.000Z");
+    const formattedDate = eventDate.toISOString().split('T')[0];
+
     const selectedPrice = passType === "VIP" ? event.VIP_price : event.price;
     const totalAmount = selectedPrice * quantity;
 
@@ -55,6 +58,7 @@ export default function DetailEvent() {
         email: email,
         passType: passType,
         totalAmount: parseInt(totalAmount, 10),
+        event_date:formattedDate
 
     }
 
@@ -116,7 +120,7 @@ export default function DetailEvent() {
                         <p className="text-muted">{event.description}</p>
 
                         <div className="my-3">
-                            <p><strong>Date:</strong> {event.start_date}</p>
+                            <p><strong>Date:</strong> {formattedDate}</p>
                             <p><strong>Location:</strong> {event.location || "Not specified"}</p>
                             <p><strong>Price:</strong> ₹{event.price || 100}</p>
                             {event.VIP_price ? <p><strong>VIP Passes:</strong> ₹{event.VIP_price}</p> : ""}
@@ -152,6 +156,17 @@ export default function DetailEvent() {
                         </div>
                         <div className="modal-body">
                             <form>
+                                <div className="form-floating mb-3">
+                                    <input
+                                        type="text"
+                                        className="form-control rounded-4 shadow-sm"
+                                        id="date"
+                                        value={formattedDate}
+                                        required
+                                        readOnly
+                                    />
+                                    <label htmlFor="date">Event Date</label>
+                                </div>
                                 <div className="form-floating mb-3">
                                     <input
                                         type="text"

@@ -10,7 +10,6 @@ function DashboardSidebar() {
   const menuItems = [
     { name: 'Analytics', icon: faChartLine, path: '' },
     { name: 'Payments', icon: faMoneyBill, path: 'payments' },
-    { name: 'Calendar', icon: faCalendar, path: 'calendar' },
     { name: 'Profile', icon: faUser, path: 'profile' },
     { name: 'Logout', icon: faSignOutAlt, path: 'logout' },
   ];
@@ -43,7 +42,7 @@ function DashboardSidebar() {
         style={{ borderBottom: '2px solid #dc3545', color: '#333', cursor: 'pointer' }}
         onClick={() => navigate('/')}
       >
-        <span className="text-danger">Event</span>Booking
+        <span className="text-danger">Party</span>Pass
       </h4>
 
       <ul className="list-unstyled m-0">

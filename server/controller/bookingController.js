@@ -3,20 +3,21 @@ import QRCode from "qrcode";
 
 export const BookSlot = async (req, res) => {
     try {
-        const { user_id, event_id, quantity, status, name, email, passType, totalAmount } = req.body;
-        const bookingId = "BOOK" + Date.now();
+        const { user_id, event_id, quantity, status, name, email, passType, totalAmount,event_date } = req.body;
+        const bookingId = "BK" + Date.now();
         const bookingUrl = `http://localhost:5173/booking/${bookingId}`;
 
         const qr_data = await QRCode.toDataURL(bookingUrl);
 
-        const sql = "INSERT INTO bookings (user_id, event_id, quantity, status, created_at, updated_at, name, email, passType, totalAmount,booking_id, qr_data) VALUES (?, ?, ?, ?, NOW(), NOW(), ?, ?, ?, ?, ?,?)";
-        const [result] = await db.execute(sql, [user_id, event_id, quantity, status, name, email, passType, totalAmount, bookingId, qr_data,]);
+        const sql = "INSERT INTO bookings (user_id, event_id, quantity, status, created_at, updated_at, name, email, passType, totalAmount,booking_id, qr_data,event_date) VALUES (?, ?, ?, ?, NOW(), NOW(), ?, ?, ?, ?, ?,?,?)";
+        const [result] = await db.execute(sql, [user_id, event_id, quantity, status, name, email, passType, totalAmount, bookingId, qr_data,event_date]);
         res.json({
             message: "Booking created successfully!",
             data: {
                 status: "successful",
                 bookingId: `${bookingId}`,
-                qr_code: `${qr_data}`
+                qr_code: `${qr_data}`,
+                event_date:`${event_date}`
             }
         });
     } catch (error) {

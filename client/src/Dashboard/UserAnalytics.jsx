@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DashboardLayout from './DashboardLayout';
+import Calendar from 'react-calendar';
+import DashboardCalender from './DashboardCalender';
 
 function UserAnalytics() {
+    const [value, onChange] = useState(new Date());
+
     return (
         <div className="p-4">
             <h3 className="mb-4 text-danger fw-bold">Analytics Dashboard</h3>
@@ -51,7 +55,7 @@ function UserAnalytics() {
                 <div className="col-lg-8 col-12">
                     <div className="d-flex justify-content-center row gap-3">
                         <div
-                            className="col-md-5 col-12 p-3 text-light"
+                            className="col-md-5 text-center col-12 p-3 text-light"
                             style={{
                                 backgroundColor: '#6f42c1',
                                 borderRadius: '12px',
@@ -62,7 +66,7 @@ function UserAnalytics() {
                             <p className="fs-4 fw-bold">120</p>
                         </div>
                         <div
-                            className="col-md-5 col-12 p-3 text-light"
+                            className="col-md-5 text-center col-12 p-3 text-light"
                             style={{
                                 backgroundColor: '#fd7e14',
                                 borderRadius: '12px',
@@ -73,7 +77,7 @@ function UserAnalytics() {
                             <p className="fs-4 fw-bold">45</p>
                         </div>
                         <div
-                            className="col-md-5 col-12 p-3 text-light"
+                            className="col-md-5 text-center col-12 p-3 text-light"
                             style={{
                                 backgroundColor: '#20c997',
                                 borderRadius: '12px',
@@ -84,7 +88,7 @@ function UserAnalytics() {
                             <p className="fs-4 fw-bold">15</p>
                         </div>
                         <div
-                            className="col-md-5 col-12 p-3 text-light"
+                            className="col-md-5 text-center col-12 p-3 text-light"
                             style={{
                                 backgroundColor: '#0d6efd',
                                 borderRadius: '12px',
@@ -97,7 +101,6 @@ function UserAnalytics() {
                     </div>
                 </div>
 
-                {/* Right Section: Calendar / Placeholder */}
                 <div
                     className="col-lg-4 col-12 p-3"
                     style={{
@@ -107,8 +110,11 @@ function UserAnalytics() {
                         minHeight: '300px',
                     }}
                 >
-                    <h5 className="mb-3">Calendar</h5>
-                    <p className="text-muted">Your calendar or event schedule goes here...</p>
+                    <div className="mb-3 d-flex justify-content-between"><h5 >Calendar</h5>
+                    <h5>🔴 Events</h5></div>
+                    <p className="text-muted">
+                       <DashboardCalender/>
+                    </p>
                 </div>
             </div>
         </div>

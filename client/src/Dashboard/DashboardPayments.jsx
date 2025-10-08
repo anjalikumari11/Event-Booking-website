@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import DashboardLayout from './DashboardLayout';
 import { getBookingDetails } from '../service/service';
 
 function DashboardPayments() {
   const [transactions, setTransactions] = useState([]);
 
-  const user = JSON.parse(localStorage.getItem("user")) || {};
-  console.log(user);
-  
+  const user = JSON.parse(localStorage.getItem("user")) || {};  
   const user_id = user.id;
 
   useEffect(() => {
