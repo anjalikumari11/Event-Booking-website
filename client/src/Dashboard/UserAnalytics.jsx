@@ -73,8 +73,8 @@ function UserAnalytics() {
                                 boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
                             }}
                         >
-                            <h5>New Users</h5>
-                            <p className="fs-4 fw-bold">45</p>
+                            <h5>Upcoming events</h5>
+                            <p className="fs-4 fw-bold">05</p>
                         </div>
                         <div
                             className="col-md-5 text-center col-12 p-3 text-light"
@@ -84,7 +84,7 @@ function UserAnalytics() {
                                 boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
                             }}
                         >
-                            <h5>Pending Payments</h5>
+                            <h5>Total Payments</h5>
                             <p className="fs-4 fw-bold">15</p>
                         </div>
                         <div
