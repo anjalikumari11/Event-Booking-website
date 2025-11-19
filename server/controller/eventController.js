@@ -2,7 +2,7 @@ import db from "../config/db.js";
 
 export const addEvent = async (req, res) => {
     try {
-        const { title, description, start_date, end_date, organizer_id, location, price, event_date, vip_price, seats } = req.body;
+        const { title, description, start_date, end_date, organizer_id,category, location, price, event_date, vip_price, seats } = req.body;
         const image = req.file ? `http://localhost:5000/uploads/${req.file.filename}` : null;
 
         if (!title || !description || !end_date || !organizer_id || !image || !price) {
@@ -11,11 +11,11 @@ export const addEvent = async (req, res) => {
 
         const sql = `
             INSERT INTO events 
-            (title, description, start_date, end_date, organizer_id, location, image, price, event_date, VIP_price, seats)
+            (title, description, start_date, end_date, organizer_id, location, image,category, price, event_date, VIP_price, seats)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
-        db.query(sql, [title, description, start_date, end_date, organizer_id, location, image, price, event_date, vip_price, seats], (err, result) => {
+        db.query(sql, [title, description, start_date, end_date, organizer_id, location, image,category, price, event_date, vip_price, seats], (err, result) => {
             if (err) {
                 return res.status(500).json({ error: "Database error", details: err });
             }
@@ -67,11 +67,50 @@ export const getEventById = async (req, res) => {
 
 export const updateEvent = async (req, res) => {
     try {
-        const { title, description, start_date, end_date, category, price } = req.body;
+        const { 
+            title, 
+            description, 
+            start_date, 
+            end_date, 
+            organizer_id, 
+            location, 
+            price, 
+            VIP_price, 
+            seats,
+            event_date 
+        } = req.body;
+
         const { id } = req.params;
 
-        const sql = "UPDATE events SET title=?, description=?, start_date=?, end_date=?, category=?,price=? WHERE id=?";
-        const [result] = await db.query(sql, [title, description, start_date, end_date, category, price, id]);
+        const sql = `
+            UPDATE events 
+            SET 
+                title=?, 
+                description=?, 
+                start_date=?, 
+                end_date=?, 
+                organizer_id=?, 
+                location=?, 
+                price=?, 
+                VIP_price=?, 
+                seats=?,
+                event_date=?
+            WHERE id=?
+        `;
+
+        const [result] = await db.query(sql, [
+            title,
+            description,
+            start_date,
+            end_date,
+            organizer_id,
+            location,
+            price,
+            VIP_price,
+            seats,
+            event_date,
+            id
+        ]);
 
         if (result.affectedRows > 0) {
             res.status(200).json({ message: "Event updated successfully" });
@@ -79,12 +118,13 @@ export const updateEvent = async (req, res) => {
             res.status(404).json({ message: "Event not found" });
         }
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             message: "Error updating event",
             error: error.message
         });
     }
 };
+
 
 
 export const deleteEvent = async (req, res) => {

@@ -6,10 +6,12 @@ import "./explore.css";
 import Footer from '../components/Footer';
 import { allEvents } from '../service/service';
 import { motion } from "framer-motion";
+import { useNavigate } from 'react-router-dom';
 
 function ExploreEvents() {
     const [filter, setFilter] = useState("all");
     const [events, setEvents] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         AOS.init({ duration: 1000, once: true });
@@ -26,10 +28,6 @@ function ExploreEvents() {
         };
         fetchEvent();
     }, []);
-
-    const handleViewDetails = (event) => {
-        alert(`You clicked on: ${event.title}`);
-    };
 
     return (
         <>
@@ -110,7 +108,7 @@ function ExploreEvents() {
                                     <motion.button
                                         whileHover={{ scale: 1.1, backgroundColor: "#ff9900" }}
                                         whileTap={{ scale: 0.95 }}
-                                        onClick={() => handleViewDetails(event)}
+                                        onClick={() =>navigate(`/events/${event.id}`)}
                                         className="btn fw-bold text-white mt-2 align-self-start px-4"
                                         style={{
                                             borderRadius: "30px",

@@ -41,3 +41,19 @@ export const getUsersWord = async (req,res) =>{
     });
     }
 }
+
+export const deleteUserWord = async (req,res) =>{
+  try {
+    const {id} = req.params;
+    const sql = "DELETE FROM usersay WHERE id = ?";
+    const [row] = db.query(sql,[id]);
+    res.status(201).json({
+      message:"Deleted successfully"
+    }) 
+  } catch (error) {
+      res.status(500).json({
+      message: "Error fetching UserSay",
+      error: error.message,
+    });
+  }
+}

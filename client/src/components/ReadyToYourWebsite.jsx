@@ -6,10 +6,10 @@ import { useNavigate } from "react-router-dom";
 function ReadyToYourWebsite() {
     const navigate = useNavigate();
     return (
-        <div className="mt-4">
+        <div className="mt-2">
         <h4>Your Event, Your Way</h4>
         <div
-            className="shadow-0 p-4 mt-3 text-left"
+            className="shadow-0 p-4 mt-2 text-left"
             style={{ background: "#f4f3f3", borderRadius: "10px", height: "37vh" }}
         >
             <h2 className="fw-bold mt-3">Ready to Host Your Own Events?</h2>

@@ -68,7 +68,7 @@ const steps = [
       <Swiper
         modules={[Autoplay]}
         spaceBetween={30}
-        slidesPerView={4} 
+        slidesPerView={3} 
         loop={true}
         allowTouchMove={false}   
         speed={5000}             

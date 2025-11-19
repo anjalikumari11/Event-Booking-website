@@ -1,4 +1,4 @@
-import { faCalendar, faMoneyBill, faUser, faChartLine, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCalendar, faMoneyBill, faUser, faChartLine, faSignOutAlt, faTicket, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +11,9 @@ function DashboardSidebar() {
     { name: 'Analytics', icon: faChartLine, path: '' },
     { name: 'Payments', icon: faMoneyBill, path: 'payments' },
     { name: 'Profile', icon: faUser, path: 'profile' },
-    { name: 'Logout', icon: faSignOutAlt, path: 'logout' },
+    {name:'Tickets', icon: faTicket, path: 'tickets'},
+    {name:'Wishlist', icon: faHeart, path: 'wishlist'},
+    { name: 'Logout', icon: faSignOutAlt, path: 'logout'}
   ];
 
   const handleSidebarClick = (item) => {

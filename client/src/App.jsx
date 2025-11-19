@@ -17,6 +17,8 @@ import DashboardPayments from './Dashboard/DashboardPayments';
 import Profile from './Dashboard/Profile';
 import About from './components/About';
 import ProtectedRoute from './ProtectedRoute';
+import Tickets from './Dashboard/Tickets';
+import DashboardWishlist from './Dashboard/DashboardWishlist';
 
 function App() {
   useEffect(() => {
@@ -37,6 +39,9 @@ function App() {
           <Route index element={<UserAnalytics />} />        
           <Route path="profile" element={<Profile />} />  
           <Route path="payments" element={<DashboardPayments/>} />  
+          <Route path='tickets' element={<Tickets/>} />
+          <Route path='wishlist' element={<DashboardWishlist/>} />
+
         </Route>
         
       </Routes>

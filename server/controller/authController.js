@@ -53,3 +53,18 @@ export const login = async (req, res) => {
         res.status(500).json({ message: "Error logging in", error: err.message });
     }
 }
+
+export const getAllUsers = async (req,res) =>{
+    try{
+        const sql ="SELECT * FROM users";
+        const [rows] =await db.query(sql);
+         res.status(201).json({
+            message: "User registered successfully",
+            data: rows
+        });
+    }catch(error){
+        res.status(500).json({
+            message:"Something went wrong"
+        })
+    }
+}

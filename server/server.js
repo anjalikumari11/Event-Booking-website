@@ -5,6 +5,10 @@ import eventRoutes from "./routes/eventRoutes.js"
 import bookingRoutes from "./routes/bookingRoutes.js";
 import imageRoutes from "./routes/imageRoutes.js";
 import userSayRoutes from "./routes/userSayRoutes.js";
+import wishlistRoutes from "./routes/wishlistRoutes.js";
+import adminAuthRoutes from "./routes/adminAuthRoutes.js";
+import ratingRoutes from "./routes/ratingRoutes.js";
+import aiRoutes from "./routes/aiRoutes.js";
 import cors from "cors";
 // import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
@@ -23,7 +27,11 @@ app.use("/auth", authRoutes);
 app.use("/event", eventRoutes);
 app.use("/booking",bookingRoutes)
 app.use("/images",imageRoutes);
-app.use("/userWords",userSayRoutes)
+app.use("/userWords",userSayRoutes);
+app.use("/wishlist",wishlistRoutes);
+app.use("/admin",adminAuthRoutes);
+app.use("/rating",ratingRoutes);
+app.use("/ai",aiRoutes);
 
 app.listen(process.env.PORT || 5000, () =>
   console.log(`Server running on port ${process.env.PORT || 5000}`)

@@ -71,3 +71,13 @@
   color: white !important;
   border-radius: 50% !important;
 }
+
+
+/* QR scanner */
+.qr-container:hover button {
+  opacity: 1;
+  pointer-events: auto;
+}
+.qr-container:hover img {
+  filter: brightness(0.5);
+}

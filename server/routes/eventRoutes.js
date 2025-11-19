@@ -2,6 +2,7 @@ import express from "express";
 import { addEvent, deleteEvent, getAllEvent, getEventById, searchByCategory, updateEvent } from "../controller/eventController.js";
 import multer from "multer";
 import path from "path";
+import { generateDescription } from "../controller/aiController.js";
 
 const router = express.Router();
 
@@ -18,5 +19,6 @@ router.get('/:id', getEventById);
 router.put("/edit/:id",updateEvent);
 router.delete("/:id",deleteEvent);
 router.get("/category/:cat",searchByCategory);
+router.post("/generate-description", generateDescription);
 
 export default router;

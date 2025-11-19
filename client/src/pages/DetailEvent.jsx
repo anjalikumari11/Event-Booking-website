@@ -1,8 +1,11 @@
 import React, { use, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { bookSlot, getEventById } from '../service/service';
+import { addItemToWishlist, addRating, bookSlot, checkWishlistItem, getAllRating, getEventById, isAlreadyRate, ratingWithEvent_id, removeItem } from '../service/service';
 import Swal from 'sweetalert2';
-import * as bootstrap from 'bootstrap';
+// import * as bootstrap from 'bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { FaStar } from 'react-icons/fa';
 
 
 export default function DetailEvent() {
@@ -16,6 +19,20 @@ export default function DetailEvent() {
     const [passType, setPassType] = useState("Normal");
     const user = localStorage.getItem("user");
     const parsedUser = JSON.parse(user);
+    const [isLiked, setIsLiked] = useState(false);
+    const [reviewRating, setReviewRating] = useState(0);
+    const [reviewText, setReviewText] = useState("");
+    const [reviews, setReviews] = useState([]);
+    const [isAlreadyReview, setIsAlreadyReview] = useState(false);
+
+    const fetchReviews = async (id) => {
+        try {
+            const res = await ratingWithEvent_id(id);
+            setReviews(res.data.data || "");
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     useEffect(() => {
         const fetchEvent = async (id) => {
@@ -30,7 +47,48 @@ export default function DetailEvent() {
             }
         };
         fetchEvent(id);
+        fetchReviews(id);
+
     }, [id]);
+
+    const checkingReview = async () => {
+        try {
+            const data = {
+                user_id: parsedUser.id,
+                event_id: id
+            }
+
+            const res = await isAlreadyRate(data);
+
+            if (res.data.message == "true") {
+                setIsAlreadyReview(true);
+            } else {
+                setIsAlreadyReview(false);
+
+            }
+        } catch (error) {
+
+        }
+    }
+
+    useEffect(() => {
+        const fetchWishlistStatus = async () => {
+            try {
+                const data = {
+                    user_id: parsedUser.id,
+                    event_id: id
+                }
+
+                const res = await checkWishlistItem(data);
+                setIsLiked(res.data.exists);
+            } catch (error) {
+                console.error("Error checking wishlist:", error);
+            }
+        };
+        fetchWishlistStatus();
+        checkingReview();
+
+    }, [user.id, id]);
 
     if (loading) {
         return <div className="text-center my-5">Loading...</div>;
@@ -58,7 +116,7 @@ export default function DetailEvent() {
         email: email,
         passType: passType,
         totalAmount: parseInt(totalAmount, 10),
-        event_date:formattedDate
+        event_date: formattedDate
 
     }
 
@@ -96,6 +154,71 @@ export default function DetailEvent() {
         }
     }
 
+    const handleLike = async () => {
+        try {
+            const data = {
+                user_id: parsedUser.id,
+                event_id: parseInt(id),
+            };
+            console.log("dkjs");
+
+            if (!isLiked) {
+                await addItemToWishlist(data);
+                setIsLiked(true);
+                Swal.fire({
+                    title: "Added to wishlist",
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false,
+                });
+            } else {
+                await removeItem(data);
+                setIsLiked(false);
+                Swal.fire({
+                    title: "Removed from wishlist",
+                    icon: "info",
+                    timer: 1500,
+                    showConfirmButton: false,
+                });
+            }
+
+
+        } catch (error) {
+            console.error("Error while updating wishlist:", error);
+            Swal.fire({
+                title: "Something went wrong!",
+                text: "Please try again later.",
+                icon: "error",
+                timer: 2000,
+                showConfirmButton: false,
+            });
+        }
+    };
+
+    const handleSubmitReview = async (e) => {
+        e.preventDefault();
+        try {
+            const data = {
+                user_id: parsedUser.id,
+                event_id: parseInt(id),
+                rating: reviewRating,
+                comment: reviewText
+            };
+
+            await addRating(data);
+
+            Swal.fire("Success!", "Your review has been submitted.", "success");
+
+            setReviews(prev => [...prev, { ...data, user_name: parsedUser.name }]);
+            setReviewRating(0);
+            setReviewText("");
+
+        } catch (error) {
+            console.error(error);
+            Swal.fire("Error!", "Failed to submit review.", "error");
+        }
+    };
+
 
     return (
         <div className="container my-5">
@@ -113,9 +236,18 @@ export default function DetailEvent() {
 
                 <div className="col-12 col-md-6 shadow-sm d-flex flex-column justify-content-between p-3">
                     <div>
+                        <div className="d-flex">
+                            <div className="ms-auto" style={{ cursor: "pointer" }} >
+                                {isLiked ?
+                                    <FontAwesomeIcon icon={faHeart} color='red' onClick={handleLike} />
+                                    :
+                                    <FontAwesomeIcon icon={faHeart} onClick={handleLike} />
+                                }
+                            </div>
+                        </div>
                         <div className='d-flex justify-content-between'>
                             <h2 className="fw-bold">{event.title}</h2>
-                            <h5 className='text-success'>Seats: {event.seats}</h5>
+                            <h5 className='text-success'>Seats: {event.seats || "Limited seats"}</h5>
                         </div>
                         <p className="text-muted">{event.description}</p>
 
@@ -147,6 +279,7 @@ export default function DetailEvent() {
 
                 </div>
             </div>
+
             <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
@@ -251,6 +384,64 @@ export default function DetailEvent() {
                     </div>
                 </div>
             </div>
+
+            <div className="mt-5">
+                <h4 className="fw-bold mb-3">Reviews & Ratings</h4>
+
+                {isAlreadyReview ?
+                    ""
+                    :
+                    <form className="shadow-sm p-3 rounded mb-4" onClick={handleSubmitReview}>
+                        <h5 className="mb-2">Submit Your Review</h5>
+                        <div className="d-flex align-items-center mb-2">
+                            {[1, 2, 3, 4, 5].map(star => (
+                                <FaStar
+                                    key={star}
+                                    size={30}
+                                    style={{ cursor: "pointer", marginRight: 5 }}
+                                    color={star <= reviewRating ? "#FFC107" : "#e4e5e9"}
+                                    onClick={() => setReviewRating(star)}
+                                />
+                            ))}
+                        </div>
+                        <textarea
+                            className="form-control mb-2"
+                            placeholder="Write your review..."
+                            value={reviewText}
+                            onChange={(e) => setReviewText(e.target.value)}
+                            rows={3}
+                            required
+                        />
+                        <button className="btn btn-primary mt-2" type='submit' >
+                            Submit Review
+                        </button>
+                    </form>
+                }
+
+                <div>
+                    {reviews.length === 0 ? (
+                        <p className="text-muted">No reviews yet.</p>
+                    ) : (
+                        reviews.map((rev, idx) => (
+                            <div key={idx} className="shadow-sm p-3 rounded mb-3">
+                                <div className="d-flex justify-content-between align-items-center mb-1">
+                                    <span>  {[1, 2, 3, 4, 5].map(star => (
+                                        <FaStar
+                                            key={star}
+                                            size={20}
+                                            color={star <= rev.rating ? "#FFC107" : "#e4e5e9"}
+                                            style={{ marginRight: 2 }}
+                                        />
+                                    ))}</span>
+                                    <span className="ms-2 fw-bold">{rev.user_name || "Anonymous"}</span>
+                                </div>
+                                <p className="mb-0">{rev.comment}</p>
+                            </div>
+                        ))
+                    )}
+                </div>
+            </div>
+
         </div>
     );
 }

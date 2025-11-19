@@ -26,11 +26,13 @@ function Banner() {
 
   return (
     <div className="positon-relative ">
-      <Navbar/>
+      <Navbar />
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         autoplay={{ delay: 3000 }}
         loop={true}
+        preloadImages={false}
+        lazy={true}
         style={{ width: "100%", height: "100vh" }}
       >
         {images.map((img, index) => (
@@ -46,13 +48,17 @@ function Banner() {
               <img
                 src={img}
                 alt={`Slide ${index}`}
+                loading="lazy"
                 style={{
                   width: "100%",
                   height: "100vh",
-                  objectFit: "center",
+                  objectFit: "cover",
                   display: "block",
                 }}
+                className="swiper-lazy"
               />
+              <div className="swiper-lazy-preloader"></div>
+
               <div
                 style={{
                   position: "absolute",
@@ -64,6 +70,7 @@ function Banner() {
                     "linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6))",
                 }}
               />
+
               <div
                 style={{
                   position: "absolute",
@@ -98,6 +105,7 @@ function Banner() {
           </SwiperSlide>
         ))}
       </Swiper>
+
     </div>
   );
 }
