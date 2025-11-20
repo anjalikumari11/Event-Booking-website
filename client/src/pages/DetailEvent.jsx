@@ -2,7 +2,6 @@ import React, { use, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { addItemToWishlist, addRating, bookSlot, checkWishlistItem, getAllRating, getEventById, isAlreadyRate, ratingWithEvent_id, removeItem } from '../service/service';
 import Swal from 'sweetalert2';
-// import * as bootstrap from 'bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FaStar } from 'react-icons/fa';
@@ -129,13 +128,12 @@ export default function DetailEvent() {
 
         try {
             const res = await bookSlot(data);
-            const modal = document.getElementById("exampleModal");
-            const modalInstance = bootstrap.Modal.getInstance(modal);
-            modalInstance.hide();
+            
             Swal.fire({
                 title: "Booking Confirmed!",
                 html: `
         <p>Your booking is confirmed.</p>
+        <p>Your booking id is also sent to you registered email.</p>
         <strong>Booking ID:</strong> ${res.data.data.bookingId}<br/>
         <img src="${res.data.data.qr_code}" style="width:200px;height:200px;margin-top:10px"/>
       `,

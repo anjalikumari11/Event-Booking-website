@@ -1,5 +1,6 @@
 import db from "../config/db.js";
 import QRCode from "qrcode";
+import { sendEmail } from "../utils/sendEmail.js";
 
 export const BookSlot = async (req, res) => {
     try {
@@ -11,15 +12,40 @@ export const BookSlot = async (req, res) => {
 
         const sql = "INSERT INTO bookings (user_id, event_id, quantity, status, created_at, updated_at, name, email, passType, totalAmount,booking_id, qr_data,event_date) VALUES (?, ?, ?, ?, NOW(), NOW(), ?, ?, ?, ?, ?,?,?)";
         const [result] = await db.execute(sql, [user_id, event_id, quantity, status, name, email, passType, totalAmount, bookingId, qr_data, event_date]);
-        res.json({
-            message: "Booking created successfully!",
-            data: {
-                status: "successful",
-                bookingId: `${bookingId}`,
-                qr_code: `${qr_data}`,
-                event_date: `${event_date}`
-            }
-        });
+
+        if (result.affectedRows > 0) {
+
+            res.json({
+                message: "Booking created successfully!",
+                data: {
+                    status: "successful",
+                    bookingId: bookingId,
+                    qr_code: qr_data,
+                    event_date: event_date
+                }
+            });
+
+            sendEmail(
+                email,
+                "Your Event is Booked Successfully 🎉",
+                `
+        <h2>Booking Confirmed</h2>
+        <p>Dear User,</p>
+        <p>Your event has been booked successfully.</p>
+        <p>Booking ID: <b>${bookingId}</b></p>
+        <br/>
+        <p>Thank you for booking with us!</p>
+        `
+            ).then(() => {
+                console.log("Email sent!");
+            }).catch(err => {
+                console.error("Email failed:", err.message);
+            });
+
+        } else {
+            console.error("Booking insert failed");
+        }
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server Error", error: error.message });
