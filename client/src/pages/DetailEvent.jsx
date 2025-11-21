@@ -157,8 +157,8 @@ export default function DetailEvent() {
             const data = {
                 user_id: parsedUser.id,
                 event_id: parseInt(id),
+                message:reviewText
             };
-            console.log("dkjs");
 
             if (!isLiked) {
                 await addItemToWishlist(data);
